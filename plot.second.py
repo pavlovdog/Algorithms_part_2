@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 df = pd.read_csv("profiler.second.csv")
-tests = zip(list(df["time"]), list(df["edges"]))
+tests = zip(list(df["time"]), list(df["raws"]))
 
 profiling = {}
 
