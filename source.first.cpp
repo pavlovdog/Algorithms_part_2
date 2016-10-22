@@ -17,17 +17,17 @@ int main() {
 	}
 
 	// SOLUTION
-	std::set<int> used_nodes;
+	std::vector<bool> used_nodes (n, false); // Init for O(n)
 	std::vector<std::pair <int, int> > answer;
 
 	for (auto edge : edges) {
-		bool check_start = std::find(used_nodes.start(), used_nodes.end(), edge.first) == used_nodes.end();
-		bool check_end = std::find(used_nodes.start(), used_nodes.end(), edge.second) == used_nodes.end();
+		bool check_start = !used[edge.first];
+		bool check_end = !used[edge.second];
 		
 		if (check_end && check_start) {
 			answer.push_back(edge);
-			used_nodes.insert(edge.first);
-			used_nodes.insert(edge.second);
+			used_nodes[edge.first] = True;
+			used_nodes[edge.second] = True;
 		}
 	}
 
