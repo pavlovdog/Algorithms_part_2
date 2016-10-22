@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <set>
 
 int main() {
 	// INIT
@@ -16,17 +17,17 @@ int main() {
 	}
 
 	// SOLUTION
-	std::vector<int> used_nodes;
+	std::set<int> used_nodes;
 	std::vector<std::pair <int, int> > answer;
 
 	for (auto edge : edges) {
-		bool check_start = std::find(used_nodes.begin(), used_nodes.end(), edge.first) == used_nodes.end();
-		bool check_end = std::find(used_nodes.begin(), used_nodes.end(), edge.second) == used_nodes.end();
+		bool check_start = std::find(used_nodes.start(), used_nodes.end(), edge.first) == used_nodes.end();
+		bool check_end = std::find(used_nodes.start(), used_nodes.end(), edge.second) == used_nodes.end();
 		
 		if (check_end && check_start) {
 			answer.push_back(edge);
-			used_nodes.push_back(edge.first);
-			used_nodes.push_back(edge.second);
+			used_nodes.insert(edge.first);
+			used_nodes.insert(edge.second);
 		}
 	}
 
