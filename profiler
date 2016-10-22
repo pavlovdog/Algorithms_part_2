@@ -59,7 +59,7 @@ if (args.first):
 			# Store results
 			profiler_first.append({"name" : "first", "nodes" : node_number, "edges" : edge_number, "time" : end - start})
 	df = pd.DataFrame(profiler_first)
-	df.to_csv("first.profiler.csv")
+	df.to_csv("profiler.first.csv")
 
 if (args.second):
 	profiler_second = []
@@ -93,4 +93,4 @@ if (args.second):
 			profiler_second.append({"name" : "second", "raws" : raws, "lenght" : lenght, "time" : end - start})
 
 	df = pd.DataFrame(profiler_second)
-	df.to_csv("second.profiler.csv")
+	df.to_csv("profiler.second.csv")
