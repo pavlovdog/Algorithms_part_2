@@ -1,0 +1,96 @@
+#!/usr/bin/python
+import argparse
+import random
+import sys
+import pandas as pd
+import time
+from termcolor import colored
+from subprocess import call
+
+parser = argparse.ArgumentParser(description='''
+	Profiler for HW, part 2.
+	Profiler works good right out of the box,
+	so just type "./profiler --first True -- second True"
+''')
+
+parser.add_argument('--first', default = False, type = bool,
+	help = "Profile first problem; default = False")
+parser.add_argument('--second', default = False, type = bool,
+	help = "Profile second problem; default = False")
+parser.add_argument('--nodes', default = [10, 20], type = int, nargs = '+',
+	help = "Nodes range for the first problem; default = 10 15")
+parser.add_argument("--edges", default = [20, 25], type = int, nargs = '+',
+	help = "Edges range for the first problem; default = 20 25")
+parser.add_argument("--raws", default = [100, 120], type = int, nargs = '+',
+	help = "Number of raws range for the second problem; default = 100 110")
+parser.add_argument('--lenght', default = [10, 20], type = int, nargs = '+',
+	help = "Raw's lenght for the second problem; default = 10 15")
+
+args = parser.parse_args()
+
+# Profile first problem
+if (args.first):
+	profiler_first = []
+	tests_number = (args.nodes[1] - args.nodes[0]) * (args.edges[1] - args.edges[0])
+	print colored("[DEBUG] Start profiling for the first problem", "blue")
+	print colored("[DEBUG] Number of tests: {}".format(tests_number), "blue")
+	print colored("[DEBUG] Edges range: " + str(args.edges[0]) + " - " + str(args.edges[1]), "blue")
+	print colored("[DEBUG] Nodes range: " + str(args.nodes[0]) + " - " + str(args.nodes[1]), "blue")
+	raw_input(colored("Press any key to start...", "magenta"))
+
+	for edge_number in range(args.edges[0], args.edges[1] + 1):
+		for node_number in range(args.nodes[0], args.nodes[1] + 1):
+			print colored("[TEST] Nodes - {}, Edges - {}".format(node_number, edge_number), "green")
+			nodes = range(1, node_number + 1)
+
+			# Generte random sample
+			with open("samples/random.sample.first", "w") as file:
+				file.write("{} {}".format(node_number, edge_number))
+				for raw in range(edge_number):
+					random_edge = "\n{} {}".format(random.choice(nodes), random.choice(nodes))
+					file.write(random_edge)
+				file.close()
+
+			# Run 'x.first' on this sample and time it
+			start = time.time()
+			call("cat samples/random.sample.first | ./x.first", shell = True)
+			end = time.time()
+
+			# Store results
+			profiler_first.append({"name" : "first", "nodes" : node_number, "edges" : edge_number, "time" : end - start})
+	df = pd.DataFrame(profiler_first)
+	df.to_csv("first.profiler.csv")
+
+if (args.second):
+	profiler_second = []
+	tests_number = (args.raws[1] - args.raws[0]) * (args.lenght[1] - args.lenght[0])
+	print colored("[DEBUG] Start profiling for the second problem", "blue")
+	print colored("[DEBUG] Number of tests: {}".format(tests_number), "blue")
+	print colored("[DEBUG] Raws number range: " + str(args.raws[0]) + " - " + str(args.raws[1]), "blue")
+	print colored("[DEBUG] Lenght's range: " + str(args.lenght[0]) + " - " + str(args.lenght[1]), "blue")
+	raw_input(colored("Press any key to start...", "magenta"))
+
+	for raws in range(args.raws[0], args.raws[1] + 1):
+		for lenght in range(args.lenght[0], args.lenght[1] + 1):
+			print colored("[TEST] Raws - {}, lenght - {}".format(raws, lenght), "green")
+
+			# Generate random sample
+			with open("samples/random.sample.second", "w") as file:
+				file.write("{} {}".format(raws, lenght))
+				for raw in range(raws):
+					new_raw = '\n'
+					for i in range(lenght):
+						new_raw += random.choice(['0', '1', '1']) # just cause
+					file.write(new_raw)
+				file.close()
+
+			# Run 'x.first' on this sample and time it
+			start = time.time()
+			call("cat samples/random.sample.second | ./x.second", shell = True)
+			end = time.time()
+
+			# Store result
+			profiler_second.append({"name" : "second", "raws" : raws, "lenght" : lenght, "time" : end - start})
+
+	df = pd.DataFrame(profiler_second)
+	df.to_csv("second.profiler.csv")
