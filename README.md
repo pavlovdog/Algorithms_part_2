@@ -65,7 +65,7 @@ $ ./profiler --first True --nodes 100 100 --edges 10 5000
 5. Следовательно BFS имееет сложность <b>O(m^3 * logn)</b>
 6. Максимум можно вызвать BFS n раз (т.к. после каждого вызова вершина будет добавляться в уже использованные).
 
-Следовательно <b>O(mn*m^3*logn)</b>
+Следовательно <b>O(n*m^3*logn)</b>
 
 ### График зависимости времени работы (Y) от числа строк (X) при фиксированной длине строки
 ![second](https://github.com/pavlovdog/Algorithms_part_2/blob/master/second.plot.png "Second plot")
