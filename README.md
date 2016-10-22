@@ -70,7 +70,7 @@ optional arguments:
 
 Видно, что за исключением несольких аномальных точек, время работы зависит линейно от числа ребер. График также подтверждает ассимптотику <b>O(m)</b>.
 
-![first](https://github.com/pavlovdog/Algorithms_part_2/blob/master/first.plot..png "First plot")
+![first](https://github.com/pavlovdog/Algorithms_part_2/blob/master/first.plot.png "First plot")
 
 ### Второй пункт
 
